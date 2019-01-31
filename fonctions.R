@@ -1,23 +1,31 @@
+################################################################################
+# creatationEchantillon
+################################################################################
+#-----------------------------------------------------------------------------
+# Objectifs
+#-----------------------------------------------------------------------------
+# Cr√©ation d'un √©chantillon de la population
+#-----------------------------------------------------------------------------
+# Arguments
+#-----------------------------------------------------------------------------
+# population : un vecteur de valeurs
+# taille : taille de l'√©chantillon (inf√©rieur √† la taille de la population)
+#-----------------------------------------------------------------------------
+# Retour
+#-----------------------------------------------------------------------------
+# Un vecteur de valeurs tir√©es al√©atoirement
 
-
-creatationEchantillon <- function(population, taille){
-  #-----------------------------------------------------------------------------
-  # Objectifs
-  #-----------------------------------------------------------------------------
-  # CrÈation d'un Èchantillon de la population
-  #-----------------------------------------------------------------------------
-  # Arguments 
-  #-----------------------------------------------------------------------------
-  # population : un vecteur de valeurs
-  # taille : taille de l'Èchantillon (infÈrieur ‡ la taille de la population)
-  #-----------------------------------------------------------------------------
-  # Retour
-  #-----------------------------------------------------------------------------
-  # Un vecteur de valeurs tirÈes alÈatoirement
-  
-  if(length(population) < taille){
-    print(paste("La taille de l'Èchantillon demandÈ est plus grande que la taille de la population (", 
-                length(population), "<", taille, ")."))
+creatationEchantillon <- function(population, taille) {
+  if (length(population) < taille) {
+    print(
+      paste(
+        "La taille de l'√©chantillon demand√© est plus grande que la taille de la population (",
+        length(population),
+        "<",
+        taille,
+        ")."
+      )
+    )
     return(NULL)
   } else {
     echantillon = sample(population, size = taille, replace = F)
@@ -25,278 +33,371 @@ creatationEchantillon <- function(population, taille){
   }
 }
 
+################################################################################
+# echantillonage
+################################################################################
+#-----------------------------------------------------------------------------
+# Objectifs
+#-----------------------------------------------------------------------------
+# Cr√©ation d'un √©chantillon de la population et visualisation de
+# l'√©chantillon
+#-----------------------------------------------------------------------------
+# Arguments
+#-----------------------------------------------------------------------------
+# population : un vecteur de valeurs
+# taille : taille de l'√©chantillon (inf√©rieur √† la taille de la population)
+#-----------------------------------------------------------------------------
+# Retour
+#-----------------------------------------------------------------------------
+# Un vecteur de valeurs tirees aleatoirement
+
 echantillonage <- function(population, taille, titlePlot = NULL) {
-  #-----------------------------------------------------------------------------
-  # Objectifs
-  #-----------------------------------------------------------------------------
-  # CrÈation d'un Èchantillon de la population et visualisation de 
-  # l'Èchantillon
-  #-----------------------------------------------------------------------------
-  # Arguments 
-  #-----------------------------------------------------------------------------
-  # population : un vecteur de valeurs
-  # taille : taille de l'Èchantillon (infÈrieur ‡ la taille de la population)
-  #-----------------------------------------------------------------------------
-  # Retour
-  #-----------------------------------------------------------------------------
-  # Un vecteur de valeurs tirÈes alÈatoirement
-  
   ech = creatationEchantillon(population, taille)
-  if(!is.null(ech)){
-    
-    if(is.null("titlePlot")){
-      plot(ech, rep(0, length(ech)), pch = 16,
-           yaxt='n', ylab = "", ylim = c(-2,2),
-           xlab = "Valeur dans l'Èchantillon",
-           col = adjustcolor("red", alpha.f = 0.3),
-           cex.main=1.2,
-           main = "Distribution de l'Èchantillon")
+  if (!is.null(ech)) {
+    if (is.null("titlePlot")) {
+      plot(
+        ech,
+        rep(0, length(ech)),
+        pch = 16,
+        yaxt = 'n',
+        ylab = "",
+        ylim = c(-2, 2),
+        xlab = "Valeur dans l'echantillon",
+        col = adjustcolor("red", alpha.f = 0.3),
+        cex.main = 1.2,
+        main = "Distribution de l'echantillon"
+      )
     } else {
-      plot(ech, rep(0, length(ech)), pch = 16,
-           yaxt='n', ylab = "", ylim = c(-2,2),
-           xlab = "Valeur dans l'Èchantillon", 
-           col = adjustcolor("red", alpha.f = 0.3),
-           cex.main=1.2,
-           main = titlePlot)
+      plot(
+        ech,
+        rep(0, length(ech)),
+        pch = 16,
+        yaxt = 'n',
+        ylab = "",
+        ylim = c(-2, 2),
+        xlab = "Valeur dans l'echantillon",
+        col = adjustcolor("red", alpha.f = 0.3),
+        cex.main = 1.2,
+        main = titlePlot
+      )
     }
     
-    abline(v = mean(ech),  col = "royalblue", lty = 2, lwd = 2)
-    text(mean(ech), y= 1, 
-         labels = paste0("Moyenne = ", round(mean(ech),2)), 
-         pos = 4)
+    abline(
+      v = mean(ech),
+      col = "royalblue",
+      lty = 2,
+      lwd = 2
+    )
+    text(
+      mean(ech),
+      y = 1,
+      labels = paste0("Moyenne = ", round(mean(ech), 2)),
+      pos = 4
+    )
   }
   return(ech)
 }
 
-echantillonageMultiple <- function(population, taille, nbEchantillon, valeurRef = NULL) {
-  #-----------------------------------------------------------------------------
-  # Objectifs
-  #-----------------------------------------------------------------------------
-  # RÈalisation d'un echantillonage multiple, representation graphique des 5
-  # premier echantillonage et visualisation graphique en histogramme des
-  # moyennes des Èchantillons
-  #-----------------------------------------------------------------------------
-  # Arguments 
-  #-----------------------------------------------------------------------------
-  # population : un vecteur de valeurs
-  # taille : taille de l'Èchantillon (infÈrieur ‡ la taille de la population)
-  # nbEchantillon : nombre d'Èchantillonage ‡ rÈaliser
-  # valeurRef : valeur de rÈfÈrence 
-  #-----------------------------------------------------------------------------
-  # Retour
-  #-----------------------------------------------------------------------------
-  # vecMean : un vecteur des moyennes des Èchantillons
-  
-  vecMean = NULL
-  if(nbEchantillon < 5){
-    layout(matrix(c(1:(nbEchantillon+1), 1, rep(nbEchantillon + 2, nbEchantillon)), nbEchantillon+1, 2, byrow = FALSE))
-  } else {
-    layout(matrix(c(1:6, 1, rep(7, 5)), 6, 2, byrow = FALSE), heights = c(0.1, rep(0.18,5)))
-  }
-  
-  par(mar = rep(0, 4))
-  plot.new()
-  text(0.5,0.5,"Echantillonage multiple",cex=1.5,font=2)
-  
-  par(mar =  c(2, 2, 2, 2))
-  
-  for(i in 1:nbEchantillon){
-    if(i <= 5){
-      ech = echantillonage(population, taille, paste("Distribution de l'Èchantillon",i))
+################################################################################
+# echantillonageMultiple
+################################################################################
+#---------------------------------------------------------------------------
+# Objectifs
+#---------------------------------------------------------------------------
+# Realisation d'un echantillonage multiple, representation graphique des 5
+# premier echantillonage et visualisation graphique en histogramme des
+# moyennes des echantillons
+#---------------------------------------------------------------------------
+# Arguments
+#---------------------------------------------------------------------------
+# population : un vecteur de valeurs
+# taille : taille de l'echantillon (inferieur √† la taille de la population)
+# nbEchantillon : nombre d'√©chantillonage √† r√©aliser
+# valeurRef : valeur de r√©f√©rence
+#---------------------------------------------------------------------------
+# Retour
+#---------------------------------------------------------------------------
+# vecMean : un vecteur des moyennes des √©chantillons
+
+echantillonageMultiple <-
+  function(population,
+           taille,
+           nbEchantillon,
+           valeurRef = NULL) {
+
+    
+    vecMean = NULL
+    if (nbEchantillon < 5) {
+      layout(matrix(c(
+        1:(nbEchantillon + 1),
+        1,
+        rep(nbEchantillon + 2, nbEchantillon)
+      ), nbEchantillon + 1, 2, byrow = FALSE))
     } else {
-      ech = creatationEchantillon(population, taille)
+      layout(matrix(c(1:6, 1, rep(7, 5)), 6, 2, byrow = FALSE), 
+             heights = c(0.1, rep(0.18, 5)))
     }
     
-    vecMean = c(vecMean, mean(ech))
-  }
-  
-  hist(vecMean, breaks = 10, col=adjustcolor("red", alpha.f = 0.3), border = "red",
-       main="Distribution des moyennes")
-  if (!is.null(valeurRef)){
-    abline(v = valeurRef, lty = 2, lwd = 2)
+    par(mar = rep(0, 4))
+    plot.new()
+    text(0.5,
+         0.5,
+         "Echantillonage multiple",
+         cex = 1.5,
+         font = 2)
     
-  } 
-  
-  return(vecMean)
-}
+    par(mar =  c(2, 2, 2, 2))
+    
+    for (i in 1:nbEchantillon) {
+      if (i <= 5) {
+        ech = echantillonage(population,
+                             taille,
+                             paste("Distribution de l'√©chantillon", i))
+      } else {
+        ech = creatationEchantillon(population, taille)
+      }
+      
+      vecMean = c(vecMean, mean(ech))
+    }
+    
+    hist(
+      vecMean,
+      breaks = 10,
+      col = adjustcolor("red", alpha.f = 0.3),
+      border = "red",
+      main = "Distribution des moyennes"
+    )
+    if (!is.null(valeurRef)) {
+      abline(v = valeurRef, lty = 2, lwd = 2)
+      
+    }
+    par(mfrow=c(1,1), mar= c(5, 4, 4, 2) + 0.1)
+    return(vecMean)
+  }
+
+################################################################################
+# multiHistogrammes
+################################################################################
+#-----------------------------------------------------------------------------
+# Objectifs
+#-----------------------------------------------------------------------------
+# R√©alisation d'une figure avec en A un histogramme des populations en
+# fr√©quence et en B un histogramme des densit√©s
+#-----------------------------------------------------------------------------
+# Arguments
+#-----------------------------------------------------------------------------
+# pop1, pop2, pop3 : des vecteurs de valeurs
+# names : vecteur de taille 3 avec les noms des populations
+#-----------------------------------------------------------------------------
+# Retour
+#-----------------------------------------------------------------------------
+# Pas de valeur retourn√©e
+
+# Pr√©paration de la table
+
 
 multiHistogrammes <- function(pop1, pop2, pop3, names) {
-  #-----------------------------------------------------------------------------
-  # Objectifs
-  #-----------------------------------------------------------------------------
-  # RÈalisation d'une figure avec en A un histogramme des populations en 
-  # frÈquence et en B un histogramme des densitÈs
-  #-----------------------------------------------------------------------------
-  # Arguments 
-  #-----------------------------------------------------------------------------
-  # pop1, pop2, pop3 : des vecteurs de valeurs
-  # names : vecteur de taille 3 avec les noms des populations
-  #-----------------------------------------------------------------------------
-  # Retour
-  #-----------------------------------------------------------------------------
-  # Pas de valeur retournÈe
-  
-  # PrÈparation de la table 
-  
-  dat = cbind(c(pop1,pop2, pop3),
-              c(rep(names[1], length(pop1)),
+  dat = cbind(c(pop1, pop2, pop3),
+              c(
+                rep(names[1], length(pop1)),
                 rep(names[2], length(pop2)),
-                rep(names[3], length(pop3))))
+                rep(names[3], length(pop3))
+              ))
   
   colnames(dat) = c('Value', 'Population')
   dat = as.data.frame(dat)
-  dat[,1] = as.numeric(as.character(dat[,1]))
+  dat[, 1] = as.numeric(as.character(dat[, 1]))
   
   meanDat <- dat %>%
     group_by(Population) %>%
     summarise(avg = mean(Value))
   
-  histo <- ggplot(dat, aes(x=Value, fill=Population)) +
-    geom_histogram(binwidth=.5, alpha=.5, position="identity") + 
+  histo <- ggplot(dat, aes(x = Value, fill = Population)) +
+    geom_histogram(binwidth = .5,
+                   alpha = .5,
+                   position = "identity") +
     theme_bw() +
-    theme(panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank(),
-          axis.line = element_line(size = 0.5, linetype = "solid",
-                                   colour = "black")
+    theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.line = element_line(
+        size = 0.5,
+        linetype = "solid",
+        colour = "black"
+      )
     ) + labs(y = "Frequency")
   
   
-  densite <- ggplot(dat, aes(x=Value, fill=Population)) + 
-    geom_density(alpha=.3) + 
-    geom_vline(data=meanDat, aes(xintercept=avg,  colour=Population),
-               linetype="dashed", size=1) +
+  densite <- ggplot(dat, aes(x = Value, fill = Population)) +
+    geom_density(alpha = .3) +
+    geom_vline(
+      data = meanDat,
+      aes(xintercept = avg,  colour = Population),
+      linetype = "dashed",
+      size = 1
+    ) +
     theme_bw() +
-    theme(panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank(),
-          axis.line = element_line(size = 0.5, linetype = "solid",
-                                   colour = "black"),
-          legend.position="none"
+    theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.line = element_line(
+        size = 0.5,
+        linetype = "solid",
+        colour = "black"
+      ),
+      legend.position = "none"
     ) + labs(y = "Density")
   
   legend <- get_legend(histo)
-  histo <- histo + theme(legend.position="none")
-  grid.arrange(histo, densite, legend, ncol=3, widths=c(2.3, 2.3, 0.8))
+  histo <- histo + theme(legend.position = "none")
+  grid.arrange(histo,
+               densite,
+               legend,
+               ncol = 3,
+               widths = c(2.3, 2.3, 0.8))
   
   
   ggdraw() +
-    draw_plot(histo,x = 0, width = 0.43) +
-    draw_plot(densite,x = 0.43, width = 0.43) +
-    draw_plot(legend,x = 0.86, width = 0.14) +
-    draw_plot_label(c("A", "B", ""), c(0, 0.43,0.86), c(1, 1, 1), size = 15)
+    draw_plot(histo, x = 0, width = 0.43) +
+    draw_plot(densite, x = 0.43, width = 0.43) +
+    draw_plot(legend, x = 0.86, width = 0.14) +
+    draw_plot_label(c("A", "B", ""), c(0, 0.43, 0.86), c(1, 1, 1), size = 15)
   
   
 }
 
-repetStudent <- function(pop1,pop2 , tailleEch1, tailleEch2, nbrTest, 
-                         pvalue = 0.05, reponseAttendue, verbose = FALSE){
-  
-  #-----------------------------------------------------------------------------
-  # Objectifs
-  #-----------------------------------------------------------------------------
-  # RÈalisation de tests multiples pour comparer l'Èchantillonage entre 
-  # 2 populations. Le test rÈalisÈ est un test de student par dÈfaut
-  #-----------------------------------------------------------------------------
-  # Arguments 
-  #-----------------------------------------------------------------------------
-  # pop1, pop2 : des vecteurs de valeurs
-  # taillePop1, taillePop2 : vecteur de taille 3 avec les noms des populations
-  # pvalue : seuil pour dÈterminer si H0 ou H1
-  # reponseAttendue : H0 ou H1 
-  # verbose : avec ou sans print
-  #-----------------------------------------------------------------------------
-  # Retour
-  #-----------------------------------------------------------------------------
-  # Pas de valeur retournÈe
-  
-  if(reponseAttendue != "H0" && reponseAttendue != "H1"){
-    stop("reponseAtendue doit Ítre soit H0 soit H1")
-  }else {
-    if(verbose){
-      print("Rappel des hypothËses : ")
-      print("H0 : les deux Èchantillons font partie de la mÍme population.")
-      print("H1 : les deux Èchantillons ne font pas partie de la mÍme population.")
-      print(paste("Pvalue sÈlectionnÈe :", pvalue))
-    }
+################################################################################
+# repetStudent
+################################################################################
+#---------------------------------------------------------------------------
+# Objectifs
+#---------------------------------------------------------------------------
+# R√©alisation de tests multiples pour comparer l'√©chantillonage entre
+# 2 populations. Le test r√©alis√© est un test de student par d√©faut
+#---------------------------------------------------------------------------
+# Arguments
+#---------------------------------------------------------------------------
+# pop1, pop2 : des vecteurs de valeurs
+# taillePop1, taillePop2 : vecteur de taille 3 avec les noms des populations
+# pvalue : seuil pour d√©terminer si H0 ou H1
+# reponseAttendue : H0 ou H1
+# verbose : avec ou sans print
+#---------------------------------------------------------------------------
+# Retour
+#---------------------------------------------------------------------------
+# Pas de valeur retourn√©e
+
+repetStudent <-
+  function(pop1,
+           pop2 ,
+           tailleEch1,
+           tailleEch2,
+           nbrTest,
+           pvalue = 0.05,
+           reponseAttendue,
+           verbose = FALSE) {
     
-    erreur = 0
-    
-    for(i in 1: nbrTest){
-      test = t.test(creatationEchantillon(pop1, tailleEch1), creatationEchantillon(pop2, tailleEch2))
-      if(test$p.value > pvalue){
-        reponse = "H0"
-      } else {
-        reponse = "H1"
+    if (reponseAttendue != "H0" && reponseAttendue != "H1") {
+      stop("reponseAtendue doit √™tre soit H0 soit H1")
+    } else {
+      if (verbose) {
+        print("Rappel des hypoth√®ses : ")
+        print("H0 : les deux √©chantillons font partie de la m√™me population.")
+        print("H1 : les deux √©chantillons ne font pas partie de la m√™me population.")
+        print(paste("Pvalue s√©lectionn√©e :", pvalue))
       }
       
-      if(reponseAttendue == reponse){
-        if(verbose){
-          print(paste(i,"- Bonne rÈponse"))
+      erreur = 0
+      
+      for (i in 1:nbrTest) {
+        test = t.test(
+          creatationEchantillon(pop1, tailleEch1),
+          creatationEchantillon(pop2, tailleEch2)
+        )
+        if (test$p.value > pvalue) {
+          reponse = "H0"
+        } else {
+          reponse = "H1"
         }
-      } else {
-        if(verbose){
-          print(paste(i, "- Mauvaise rÈponse"))
+        
+        if (reponseAttendue == reponse) {
+          if (verbose) {
+            print(paste(i, "- Bonne r√©ponse"))
+          }
+        } else {
+          if (verbose) {
+            print(paste(i, "- Mauvaise r√©ponse"))
+          }
+          erreur = erreur + 1
         }
-        erreur = erreur +1
       }
+      
+      if (verbose) {
+        print(paste("Pourcentage d'erreur :", erreur * 100 / nbrTest, "%"))
+      }
+      
+      return(erreur * 100 / nbrTest)
     }
-    
-    if(verbose){
-      print(paste("Pourcentage d'erreur :", erreur*100/nbrTest, "%"))
-    }
-    
-    return(erreur*100/nbrTest)
   }
-}
 
-repetStudentAdjust <- function(pop1,pop2 , tailleEch1, tailleEch2, nbrTest, 
-                               pvalue = 0.05, reponseAttendue,methodAdjust = "bonferroni" ){
-  
-  #-----------------------------------------------------------------------------
-  # Objectifs
-  #-----------------------------------------------------------------------------
-  # RÈalisation de tests multiples pour comparer l'Èchantillonage entre 
-  # 2 populations. Le test rÈalisÈ est un test de student par dÈfaut
-  #-----------------------------------------------------------------------------
-  # Arguments 
-  #-----------------------------------------------------------------------------
-  # pop1, pop2 : des vecteurs de valeurs
-  # taillePop1, taillePop2 : vecteur de taille 3 avec les noms des populations
-  # pvalue : seuil pour dÈterminer si H0 ou H1
-  # reponseAttendue : H0 ou H1 
-  # methodAdjust : mÈthode d'ajustement de la P-value
-  #-----------------------------------------------------------------------------
-  # Retour
-  #-----------------------------------------------------------------------------
-  # Pas de valeur retournÈe
-  
-  if(reponseAttendue != "H0" && reponseAttendue != "H1"){
-    stop("reponseAtendue doit Ítre soit H0 soit H1")
-  }else {
-    print("Rappel des hypothËses : ")
-    print("H0 : les deux Èchantillons font partie de la mÍme population.")
-    print("H1 : les deux Èchantillons ne font pas partie de la mÍme population.")
-    print(paste("Pvalue sÈlectionnÈe :", pvalue))
+################################################################################
+# repetStudentAdjust
+################################################################################
+
+#---------------------------------------------------------------------------
+# Objectifs
+#---------------------------------------------------------------------------
+# R√©alisation de tests multiples pour comparer l'√©chantillonage entre
+# 2 populations. Le test r√©alis√© est un test de student par d√©faut
+#---------------------------------------------------------------------------
+# Arguments
+#---------------------------------------------------------------------------
+# pop1, pop2 : des vecteurs de valeurs
+# taillePop1, taillePop2 : vecteur de taille 3 avec les noms des populations
+# pvalue : seuil pour d√©terminer si H0 ou H1
+# reponseAttendue : H0 ou H1
+# methodAdjust : m√©thode d'ajustement de la P-value
+#---------------------------------------------------------------------------
+# Retour
+#---------------------------------------------------------------------------
+# Pas de valeur retourn√©e
+
+repetStudentAdjust <-
+  function(pop1,
+           pop2 ,
+           tailleEch1,
+           tailleEch2,
+           nbrTest,
+           pvalue = 0.05,
+           reponseAttendue,
+           methodAdjust = "bonferroni") {
     
-    
-    erreur = 0
-    pvalueVec = NULL
-    for(i in 1: nbrTest){
-      test = t.test(creatationEchantillon(pop1, tailleEch1), creatationEchantillon(pop2, tailleEch2))
-      pvalueVec = c(pvalueVec, test$p.value) 
+    if (reponseAttendue != "H0" && reponseAttendue != "H1") {
+      stop("reponseAtendue doit √™tre soit H0 soit H1")
+    } else {
+      print("Rappel des hypoth√®ses : ")
+      print("H0 : les deux √©chantillons font partie de la m√™me population.")
+      print("H1 : les deux √©chantillons ne font pas partie de la m√™me population.")
+      print(paste("Pvalue s√©lectionn√©e :", pvalue))
+      
+      erreur = 0
+      pvalueVec = NULL
+      for (i in 1:nbrTest) {
+        test = t.test(
+          creatationEchantillon(pop1, tailleEch1),
+          creatationEchantillon(pop2, tailleEch2)
+        )
+        pvalueVec = c(pvalueVec, test$p.value)
+      }
+      
+      padjust = p.adjust(pvalueVec, method = methodAdjust)
+      
+      hypotheses = rep("H1", length(padjust))
+      hypotheses[which(padjust > pvalue)] = "H0"
+      
+      erreur = sum(hypotheses != reponseAttendue) * 100 / nbrTest
+      print(paste("Pourcentage d'erreur :", erreur , "%"))
+      
+      return(erreur)
     }
-    
-    padjust = p.adjust(pvalueVec,method=methodAdjust)
-    
-    hypotheses = rep("H1", length(padjust))
-    hypotheses[which(padjust > pvalue )] = "H0"
-    
-    erreur = sum(hypotheses != reponseAttendue ) *100/nbrTest
-    print(paste("Pourcentage d'erreur :",erreur ,"%"))
-    
-    return(erreur)
   }
-}
-
-
-
-

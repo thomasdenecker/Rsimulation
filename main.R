@@ -6,15 +6,13 @@
 ################################################################################
 
 ################################################################################
-# Library
+# Installation de packages
 ################################################################################
 
 install.packages("tidyverse")
 install.packages("dplyr")
 install.packages("gridExtra")
 install.packages("cowplot")
-
-
 
 ################################################################################
 # Library
@@ -25,12 +23,11 @@ library("dplyr")
 library("gridExtra")
 library("cowplot")
 
-
 ################################################################################
 # Fonctions 
 ################################################################################
 
-source("fonctions.R")
+source("fonctions.R", encoding="utf-8")
 
 ################################################################################
 # Main 
@@ -158,8 +155,3 @@ lines(seq(5,1000, 5),vecErreurAC, col = "forestgreen")
 legend("topright", legend = c("A VS A", "A VS B", "A VS C"), lty = 1, col = c("red", "royalblue", "forestgreen"),
        box.lty = 0, inset = 0.01)
 
-vecErreurBB = NULL
-for( sizeEch in seq(5,1000, 5)){
-  vecErreurBB = c(vecErreurBB,repetStudent(popB,popB , sizeEch, sizeEch, 100, reponseAttendue = "H0", verbose = F))
-
-}
