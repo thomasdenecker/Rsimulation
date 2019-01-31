@@ -1,18 +1,9 @@
 ################################################################################
 # R-simulation 
-# Thomas DENECKER  Gaëlle Lelandais
+# Thomas DENECKER  GaÃ«lle Lelandais
 # DU omics - session 2 - 2019
 #
 ################################################################################
-
-################################################################################
-# Installation de packages
-################################################################################
-
-install.packages("tidyverse")
-install.packages("dplyr")
-install.packages("gridExtra")
-install.packages("cowplot")
 
 ################################################################################
 # Library
@@ -34,7 +25,7 @@ source("fonctions.R", encoding="utf-8")
 ################################################################################
 
 #===============================================================================
-# Lecture des données
+# Lecture des donn?es
 #===============================================================================
 
 pop0 = runif(n = 10000,min = 0,max = 300)
@@ -59,11 +50,11 @@ ech0 = echantillonage(population = pop0, taille = 100)
 # Echantillonage multiple
 #-------------------------------------------------------------------------------
 
-# Sans valeur de référence
+# Sans valeur de r?f?rence
 vecteurMoyenne = echantillonageMultiple(population = pop0, taille = 100, 
                                         nbEchantillon = 10)
 
-# Avec une valeur de référence
+# Avec une valeur de r?f?rence
 vecteurMoyenne = echantillonageMultiple(population = pop0, taille = 100, 
                                         nbEchantillon = 100, valeurRef = 150)
 
@@ -108,7 +99,7 @@ t.test(creatationEchantillon(popA, 100), creatationEchantillon(popC, 100))
 t.test(creatationEchantillon(popA, 100), creatationEchantillon(popC, 100))
 
 #-------------------------------------------------------------------------------
-# Test de Student répété
+# Test de Student r?p?t?
 #-------------------------------------------------------------------------------
 
 # A VS A
@@ -131,7 +122,7 @@ repetStudentAdjust(popA,popC , 100, 100, 10, reponseAttendue = "H0")
 
 
 #-------------------------------------------------------------------------------
-# Test de Student répété Taille de l'échantillon
+# Test de Student r?p?t? Taille de l'?chantillon
 #-------------------------------------------------------------------------------
 
 # A VS A, B et C
@@ -146,9 +137,9 @@ for( sizeEch in seq(5,1000, 5)){
 }
 
 plot(seq(5,1000, 5),vecErreurAA, type = "l", col = "red", las = 2,
-     xlab = "Taille de l'échantillon",
+     xlab = "Taille de l'?chantillon",
      ylab = "Pourcentage d'erreur",
-     main = "Effet de la taille de l'échantillon - PopA",
+     main = "Effet de la taille de l'?chantillon - PopA",
      ylim = c(0, 100))
 lines(seq(5,1000, 5),vecErreurAB, col = "royalblue")
 lines(seq(5,1000, 5),vecErreurAC, col = "forestgreen")
